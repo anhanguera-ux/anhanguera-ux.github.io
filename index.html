@@ -1,207 +1,186 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de Mensalidade Anhanguera</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculadora de Mensalidade Final</title>
 
-  <!-- Fonte personalizada -->
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #FFA500; /* Fundo bem laranja */
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .container {
+    background-color: white; /* Caixa branca */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  h2 {
+    text-align: center;
+  }
 
-  <style>
-    body {
-      font-family: 'Open Sans', sans-serif;
-      margin: 0;
-      background-color: #121212; /* Fundo escuro */
-      color: #f1f1f1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+  }
 
-    .container {
-      background-color: #1e1e1e;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255, 77, 0, 0.3); /* Sombra laranja */
-      width: 100%;
-      max-width: 400px;
-    }
+  input, select, button {
+    margin-top: 5px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    color: black;
+  }
 
-    img.logo {
-      display: block;
-      margin: 0 auto 20px;
-      max-width: 160px;
-    }
+  button {
+    margin-top: 20px;
+    background-color: black;
+    color: #FFA500;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-    h2 {
-      text-align: center;
-      color: #ff6600;
-    }
+  button:hover {
+    background-color: #333333;
+  }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #ffffff;
-    }
+  .resultado {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: black;
+    font-weight: bold;
+  }
 
-    input, select, button {
-      margin-top: 5px;
-      padding: 10px;
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #555;
-      border-radius: 5px;
-      background-color: #2c2c2c;
-      color: #fff;
-    }
+  .mensagem {
+    color: black;
+    font-size: 1em;
+    margin-top: 5px;
+    font-weight: bold;
+  }
 
-    input:focus, select:focus {
-      outline: none;
-      border-color: #ff6600;
-    }
-
-    button {
-      margin-top: 20px;
-      background-color: transparent;
-      color: #ff6600;
-      border: 2px solid #ff6600;
-      cursor: pointer;
-      font-weight: bold;
-      border-radius: 5px;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background-color: #ff6600;
-      color: black;
-    }
-
-    .resultado {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #ffcc00;
-      font-weight: bold;
-    }
-
-    .mensagem {
-      color: #cccccc;
-      font-size: 0.9em;
-      margin-top: 5px;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+  .hidden {
+    display: none;
+  }
+</style>
 </head>
+
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- Logo Anhanguera -->
-    <img src="https://www.anhanguera.com/static/media/logo.72c95f10.svg" alt="Anhanguera" class="logo" />
+<h2>Calculadora de Mensalidade Final</h2>
 
-    <h2>Calculadora de Mensalidade</h2>
+<label for="M">Valor da Mensalidade (M):</label>
+<input type="number" id="M" step="0.01" min="0" value="149" />
 
-    <label for="M">Valor da Mensalidade (M):</label>
-    <input type="number" id="M" step="0.01" min="0" value="149" />
+<label for="modalidade">Modalidade:</label>
+<select id="modalidade">
+  <option value="presencial">Presencial</option>
+  <option value="semipresencial" selected>Semipresencial</option>
+</select>
 
-    <label for="modalidade">Modalidade:</label>
-    <select id="modalidade">
-      <option value="presencial">Presencial</option>
-      <option value="semipresencial" selected>Semipresencial</option>
-    </select>
+<label for="desconto">Desconto:</label>
+<select id="desconto" onchange="mostrarCampoEnem()">
+  <option value="nenhum" selected>Nenhum</option>
+  <option value="carteira">Carteira Assinada / Servidor Público (20%)</option>
+  <option value="encceja">Encceja (10%)</option>
+  <option value="enem">ENEM (de acordo com a nota)</option>
+</select>
 
-    <label for="desconto">Desconto:</label>
-    <select id="desconto" onchange="mostrarCampoEnem()">
-      <option value="nenhum" selected>Nenhum</option>
-      <option value="carteira">Carteira Assinada / Servidor Público (20%)</option>
-      <option value="encceja">Encceja (10%)</option>
-      <option value="enem">ENEM (de acordo com a nota)</option>
-    </select>
+<div id="campoEnem" class="hidden">
+  <label for="notaEnem">Nota do ENEM:</label>
+  <input type="number" id="notaEnem" min="0" max="1000" value="600" />
+</div>
 
-    <div id="campoEnem" class="hidden">
-      <label for="notaEnem">Nota do ENEM:</label>
-      <input type="number" id="notaEnem" min="0" max="1000" value="600" />
-    </div>
+<label for="ME">Meses Eliminados (ME):</label>
+<input type="number" id="ME" min="0" value="2" />
 
-    <label for="ME">Meses Eliminados (ME):</label>
-    <input type="number" id="ME" min="0" value="2" />
+<label for="MT">Meses Totais (MT):</label>
+<input type="number" id="MT" min="1" value="48" />
 
-    <label for="MT">Meses Totais (MT):</label>
-    <input type="number" id="MT" min="1" value="48" />
+<button onclick="calcularMensalidade()">Calcular</button>
 
-    <button onclick="calcularMensalidade()">Calcular</button>
+<div class="resultado" id="resultado"></div>
+<div class="mensagem" id="mensagemFinal"></div>
 
-    <div class="resultado" id="resultado"></div>
-    <div class="mensagem" id="mensagemFinal"></div>
-  </div>
+<script>
+function mostrarCampoEnem() {
+  const desconto = document.getElementById('desconto').value;
+  const campoEnem = document.getElementById('campoEnem');
+  if (desconto === 'enem') {
+    campoEnem.classList.remove('hidden');
+  } else {
+    campoEnem.classList.add('hidden');
+  }
+}
 
-  <script>
-    function mostrarCampoEnem() {
-      const desconto = document.getElementById('desconto').value;
-      const campoEnem = document.getElementById('campoEnem');
-      if (desconto === 'enem') {
-        campoEnem.classList.remove('hidden');
-      } else {
-        campoEnem.classList.add('hidden');
-      }
+function calcularMensalidade() {
+  const M_original = parseFloat(document.getElementById('M').value);
+  const modalidade = document.getElementById('modalidade').value;
+  const desconto = document.getElementById('desconto').value;
+  const notaEnem = parseFloat(document.getElementById('notaEnem').value) || 0;
+  const ME = parseInt(document.getElementById('ME').value);
+  const MT = parseInt(document.getElementById('MT').value);
+
+  if (isNaN(M_original) || M_original <= 0) {
+    alert('Digite um valor válido para a mensalidade.');
+    return;
+  }
+  if (ME < 0 || MT <= 0 || ME >= MT) {
+    alert('Verifique os valores de ME e MT (ME deve ser menor que MT).');
+    return;
+  }
+
+  let Mod = 0;
+  if (modalidade === 'presencial') {
+    Mod = 0.20;
+  } else if (modalidade === 'semipresencial') {
+    Mod = 0.10;
+  }
+
+  // Aplicando o desconto sobre a mensalidade M
+  let descontoValor = 0;
+  if (desconto === 'carteira') {
+    descontoValor = 0.20;
+  } else if (desconto === 'encceja') {
+    descontoValor = 0.10;
+  } else if (desconto === 'enem') {
+    if (notaEnem >= 901 && notaEnem <= 1000) {
+      descontoValor = 1.00;
+    } else if (notaEnem >= 751 && notaEnem <= 900) {
+      descontoValor = 0.60;
+    } else if (notaEnem >= 451 && notaEnem <= 750) {
+      descontoValor = 0.15;
+    } else if (notaEnem >= 1 && notaEnem <= 450) {
+      descontoValor = 0.10;
     }
+  }
 
-    function calcularMensalidade() {
-      const M_original = parseFloat(document.getElementById('M').value);
-      const modalidade = document.getElementById('modalidade').value;
-      const desconto = document.getElementById('desconto').value;
-      const notaEnem = parseFloat(document.getElementById('notaEnem').value) || 0;
-      const ME = parseInt(document.getElementById('ME').value);
-      const MT = parseInt(document.getElementById('MT').value);
+  const M_comDesconto = M_original * (1 - descontoValor);
 
-      if (isNaN(M_original) || M_original <= 0) {
-        alert('Digite um valor válido para a mensalidade.');
-        return;
-      }
-      if (ME < 0 || MT <= 0 || ME >= MT) {
-        alert('Verifique os valores de ME e MT (ME deve ser menor que MT).');
-        return;
-      }
+  const mensalidadeFinal = M_comDesconto + (((M_comDesconto + M_comDesconto * Mod) * ME - 59) / (MT - ME));
+  const mensalidadeFinalArredondada = mensalidadeFinal.toFixed(2);
 
-      let Mod = 0;
-      if (modalidade === 'presencial') {
-        Mod = 0.20;
-      } else if (modalidade === 'semipresencial') {
-        Mod = 0.10;
-      }
+  document.getElementById('resultado').innerText = 
+    `Mensalidade final: R$ ${mensalidadeFinalArredondada}`;
+    
+  document.getElementById('mensagemFinal').innerText = 
+    'Valores sujeitos a alterações conforme bolsas e critérios institucionais.';
+}
+</script>
 
-      let descontoValor = 0;
-      if (desconto === 'carteira') {
-        descontoValor = 0.20;
-      } else if (desconto === 'encceja') {
-        descontoValor = 0.10;
-      } else if (desconto === 'enem') {
-        if (notaEnem >= 901 && notaEnem <= 1000) {
-          descontoValor = 1.00;
-        } else if (notaEnem >= 751 && notaEnem <= 900) {
-          descontoValor = 0.60;
-        } else if (notaEnem >= 451 && notaEnem <= 750) {
-          descontoValor = 0.15;
-        } else if (notaEnem >= 1 && notaEnem <= 450) {
-          descontoValor = 0.10;
-        }
-      }
-
-      const M_comDesconto = M_original * (1 - descontoValor);
-      const mensalidadeFinal = M_comDesconto + (((M_comDesconto + M_comDesconto * Mod) * ME - 59) / (MT - ME));
-      const mensalidadeFinalArredondada = mensalidadeFinal.toFixed(2);
-
-      document.getElementById('resultado').innerText = 
-        `Mensalidade final: R$ ${mensalidadeFinalArredondada}`;
-        
-      document.getElementById('mensagemFinal').innerText = 
-        'Valores sujeitos a alterações conforme bolsas e critérios institucionais.';
-    }
-  </script>
+</div>
 </body>
 </html>
